@@ -1,4 +1,5 @@
 package io.github.peepo3663.housecallprointerview.util
 
-class Constants {
+object Constants {
+    const val baseUrl = "https://jsonplaceholder.typicode.com"
 }

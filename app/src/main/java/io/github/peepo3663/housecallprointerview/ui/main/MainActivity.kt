@@ -1,4 +1,4 @@
-package io.github.peepo3663.housecallprointerview
+package io.github.peepo3663.housecallprointerview.ui.main
 
 import android.os.Bundle
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -6,18 +6,31 @@ import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import io.github.peepo3663.housecallprointerview.R
+import io.github.peepo3663.housecallprointerview.components.DaggerActivityComponent
+import io.github.peepo3663.housecallprointerview.modules.ActivityModule
+import javax.inject.Inject
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), MainContract.View {
+
+    @Inject
+    lateinit var presenter: MainContract.Presenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(findViewById(R.id.toolbar))
 
-        findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
-        }
+        injectDependency()
+
+        presenter.attach(this)
+    }
+
+    private fun injectDependency() {
+        val activityComponent = DaggerActivityComponent.builder()
+            .activityModule(ActivityModule(this))
+            .build()
+        activityComponent.inject(this);
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -34,5 +47,9 @@ class MainActivity : AppCompatActivity() {
             R.id.action_settings -> true
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun showUserListFragment() {
+
     }
 }
