@@ -1,14 +1,14 @@
 package io.github.peepo3663.housecallprointerview.ui.main
 
 import android.os.Bundle
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
-import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 import io.github.peepo3663.housecallprointerview.R
+import io.github.peepo3663.housecallprointerview.api.ApiService
 import io.github.peepo3663.housecallprointerview.components.DaggerActivityComponent
 import io.github.peepo3663.housecallprointerview.modules.ActivityModule
+import io.github.peepo3663.housecallprointerview.modules.NetworkModule
 import io.github.peepo3663.housecallprointerview.ui.list.UserListFragment
 import javax.inject.Inject
 
@@ -16,6 +16,8 @@ class MainActivity : AppCompatActivity(), MainContract.View {
 
     @Inject
     lateinit var presenter: MainContract.Presenter
+    @Inject
+    lateinit var api: ApiService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,12 +26,13 @@ class MainActivity : AppCompatActivity(), MainContract.View {
 
         injectDependency()
 
-        presenter.attach(this)
+        presenter.attach(this, api)
     }
 
     private fun injectDependency() {
         val activityComponent = DaggerActivityComponent.builder()
             .activityModule(ActivityModule(this))
+            .networkModule(NetworkModule())
             .build()
         activityComponent.inject(this);
     }

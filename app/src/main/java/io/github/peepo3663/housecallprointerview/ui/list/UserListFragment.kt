@@ -13,7 +13,6 @@ import io.github.peepo3663.housecallprointerview.components.DaggerFragmentCompon
 import io.github.peepo3663.housecallprointerview.models.User
 import io.github.peepo3663.housecallprointerview.modules.FragmentModule
 import io.github.peepo3663.housecallprointerview.modules.NetworkModule
-import io.github.peepo3663.housecallprointerview.util.Constants
 import kotlinx.android.synthetic.main.fragment_user_list.*
 import javax.inject.Inject
 
@@ -23,6 +22,7 @@ import javax.inject.Inject
 class UserListFragment : Fragment(), ListContract.View {
 
     @Inject lateinit var presenter: ListContract.Presenter
+    @Inject lateinit var api: ApiService
     private lateinit var rootView: View
 
     companion object {
@@ -39,7 +39,7 @@ class UserListFragment : Fragment(), ListContract.View {
     }
 
     private fun injectDependency() {
-        val listComponent = DaggerFragmentComponent.builder().fragmentModule(FragmentModule()).build()
+        val listComponent = DaggerFragmentComponent.builder().fragmentModule(FragmentModule()).networkModule(NetworkModule()).build()
         listComponent.inject(this)
     }
 
@@ -55,7 +55,7 @@ class UserListFragment : Fragment(), ListContract.View {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        presenter.attach(this)
+        presenter.attach(this, api)
         presenter.subscribe()
         initView()
     }
