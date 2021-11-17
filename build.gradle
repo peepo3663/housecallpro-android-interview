@@ -4,6 +4,8 @@ buildscript {
     ext.dagger_version = "2.40.1"
     ext.retrofit_version = "2.7.2"
     ext.gson_version = "2.6.0"
+    ext.rxjava2_version = "2.2.21"
+    ext.rxandroid_version = "2.1.1"
     repositories {
         google()
         jcenter()

@@ -9,6 +9,7 @@ import android.view.MenuItem
 import io.github.peepo3663.housecallprointerview.R
 import io.github.peepo3663.housecallprointerview.components.DaggerActivityComponent
 import io.github.peepo3663.housecallprointerview.modules.ActivityModule
+import io.github.peepo3663.housecallprointerview.ui.list.UserListFragment
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity(), MainContract.View {
@@ -50,6 +51,9 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     }
 
     override fun showUserListFragment() {
-
+        supportFragmentManager.beginTransaction()
+            .disallowAddToBackStack()
+            .replace(R.id.nav_host_fragment, UserListFragment().newInstance(), UserListFragment.TAG)
+            .commit()
     }
 }

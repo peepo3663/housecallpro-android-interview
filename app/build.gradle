@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'kotlin-android-extensions'
     id 'kotlin-kapt'
 }
 
@@ -44,7 +45,12 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui-ktx:2.2.2'
     //retrofit dependency
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$gson_version"
+
+    //rx
+    implementation "io.reactivex.rxjava2:rxjava:$rxjava2_version"
+    implementation "io.reactivex.rxjava2:rxandroid:$rxandroid_version"
 
     // dagger dependency
     implementation "com.google.dagger:dagger:$dagger_version"

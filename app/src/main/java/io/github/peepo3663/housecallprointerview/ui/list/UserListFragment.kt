@@ -1,16 +1,20 @@
 package io.github.peepo3663.housecallprointerview.ui.list
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import androidx.navigation.fragment.findNavController
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import io.github.peepo3663.housecallprointerview.R
+import io.github.peepo3663.housecallprointerview.api.ApiService
 import io.github.peepo3663.housecallprointerview.components.DaggerFragmentComponent
 import io.github.peepo3663.housecallprointerview.models.User
 import io.github.peepo3663.housecallprointerview.modules.FragmentModule
+import io.github.peepo3663.housecallprointerview.modules.NetworkModule
+import io.github.peepo3663.housecallprointerview.util.Constants
+import kotlinx.android.synthetic.main.fragment_user_list.*
 import javax.inject.Inject
 
 /**
@@ -20,6 +24,14 @@ class UserListFragment : Fragment(), ListContract.View {
 
     @Inject lateinit var presenter: ListContract.Presenter
     private lateinit var rootView: View
+
+    companion object {
+        const val TAG = "UserListFragment"
+    }
+
+    fun newInstance(): UserListFragment {
+        return UserListFragment()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +48,7 @@ class UserListFragment : Fragment(), ListContract.View {
             savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        rootView = inflater.inflate(R.layout.fragment_first, container, false)
+        rootView = inflater.inflate(R.layout.fragment_user_list, container, false)
         return rootView
     }
 
@@ -59,14 +71,21 @@ class UserListFragment : Fragment(), ListContract.View {
     }
 
     override fun showProgress(show: Boolean) {
-        TODO("Not yet implemented")
+        if (show) {
+            progressBar.visibility = View.VISIBLE
+        } else {
+            progressBar.visibility = View.GONE
+        }
     }
 
-    override fun showErrorMessage(error: String) {
-        TODO("Not yet implemented")
+    override fun showErrorMessage(error: String?) {
+        Log.e(TAG, error ?: "Error")
     }
 
     override fun loadUserListDataSuccess(users: List<User>) {
-        TODO("Not yet implemented")
+        val activity = requireActivity()
+        val adapter = UserListAdapter(users.toMutableList())
+        recyclerView.layoutManager = LinearLayoutManager(activity)
+        recyclerView.adapter = adapter
     }
 }

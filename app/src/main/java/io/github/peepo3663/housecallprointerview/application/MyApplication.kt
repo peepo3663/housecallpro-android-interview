@@ -18,8 +18,6 @@ class MyApplication: Application() {
         appComponent.inject(this)
     }
 
-    private fun initDagger(app: MyApplication): AppComponent = DaggerAppComponent.builder().appModule(AppModule(app)).networkModule(
-        NetworkModule(Constants.baseUrl)
-    ).build()
+    private fun initDagger(app: MyApplication): AppComponent = DaggerAppComponent.builder().appModule(AppModule(app)).networkModule(NetworkModule()).build()
     fun getApplicationComponent(): AppComponent = appComponent
 }
